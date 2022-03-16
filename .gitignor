@@ -1,3 +1,5 @@
+Thumbs.db*
+.DS_Store
 HELP.md
 .gradle
 build/
@@ -41,6 +43,3 @@ out/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-© 2022 GitHub, Inc.
-Terms
-Privacy
