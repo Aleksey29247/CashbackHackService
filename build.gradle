@@ -1,0 +1,124 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
+}
+
+group 'io.github.githublogin'
+archivesBaseName = 'TaskOneCashbackHacker'
+version = System.getenv('RELEASE_VERSION') ?: "0.0.1"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'org.testng', name: 'testng', version: '7.5'
+}
+
+test {
+    useTestNG()
+}
+
+jar {
+    from sourceSets.main.output
+    from sourceSets.main.allJava
+}
+
+signing {
+    sign publishing.publications
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId group
+            artifactId archivesBaseName
+            version version
+
+            from components.java
+        }
+    }
+
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        root.children().last() + {
+            resolveStrategy = DELEGATE_FIRST
+
+            description 'Some description of artifact'
+            name 'Artifct name'
+            url 'https://github.com/Aleksey29247/CashbackHackService.git'
+            organization {
+                name 'com.github.login'
+                url 'https://github.com/githublogin'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/Aleksey29247/CashbackHackService/issues'
+            }
+            licenses {
+                license {
+                    name 'The Apache License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            scm {
+                url 'https://github.com/Aleksey29247/CashbackHackService'
+                connection 'scm:https://github.com/Aleksey29247/CashbackHackService.git'
+                developerConnection 'scm:git://github.com/Aleksey29247/CashbackHackService.git'
+            }
+            developers {
+                developer {
+                    id 'dev'
+                    name 'DevName'
+                    email 'email@dev.ru'
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+/*plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'org.testng', name: 'testng', version: '7.5'
+
+}
+
+test {
+    useTestNG()
+}*/
